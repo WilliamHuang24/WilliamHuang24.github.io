@@ -6,9 +6,9 @@
 
   // Sample data
   let data = [
-    { obj: 1, nodeRadius: 20, color: "beige"},
-    { obj: 2, nodeRadius: 30, color: "coral"},
-    { obj: 3, nodeRadius: 40, color: "cornsilk"},
+    { obj: 'site', nodeRadius: 20, color: "beige"},
+    { obj: 'compiler', nodeRadius: 30, color: "coral"},
+    { obj: 'text', nodeRadius: 40, color: "cornsilk"},
     { obj: 4, nodeRadius: 20, color: "cyan"},
     { obj: 5, nodeRadius: 30, color: "red"},
   ];
@@ -25,17 +25,16 @@
     const simulation = d3
       // @ts-ignore
       .forceSimulation(data)
-      .force("charge", d3.forceManyBody().strength(100))
+      .force("charge", d3.forceManyBody().strength(10))
       .force("center", d3.forceCenter(width / 2, height / 2))
       .force("collide", d3.forceCollide((d) => d.nodeRadius + 0.5))
-      .alpha(1)
-      .alphaDecay('0.01');
+      .alpha(1);
 
     // Create nodes
     const node = svg
       .append("g")
       .attr("stroke", "black")
-      .attr("stroke-width", 1)
+      .attr("stroke-width", "0.01em")
       .selectAll("circle")
       .data(data)
       .join("circle")
@@ -50,15 +49,16 @@
       .selectAll("text")
       .data(simulation.nodes())
       .enter().append("text")
-      .text((d) => d.obj);
+      .attr('text-anchor', 'middle')
+      .text((d) => d.obj)
+      .attr('font-size', (d) => d.nodeRadius / 3)
+      .style('pointer-events', 'none');
 
     // Update positions on each tick
     simulation.on("tick", () => {
       // @ts-ignore
       node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-      text.attr("transform", (d) => {
-        return "translate(" + d.x + "," + d.y + ")";
-      });
+      text.attr("dx", (d) => d.x).attr("dy", (d) => d.y);
     });
 
     function dragStart(event) {
