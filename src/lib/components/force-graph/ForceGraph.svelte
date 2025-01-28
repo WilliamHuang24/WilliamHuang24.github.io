@@ -25,9 +25,11 @@
     const simulation = d3
       // @ts-ignore
       .forceSimulation(data)
-      .force("charge", d3.forceManyBody().strength(10))
+      .force("charge", d3.forceManyBody().strength(-3))
+      .force("x", d3.forceX(width / 2).strength(0.005))
+      .force("y", d3.forceY(height / 2).strength(0.005))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide((d) => d.nodeRadius + 0.5))
+      .force("collide", d3.forceCollide((d) => d.nodeRadius + 0.5).strength(1))
       .alpha(1);
 
     // Create nodes
@@ -41,7 +43,8 @@
       .attr("r", (d) => d.nodeRadius)
       .attr("fill", (d) => d.color)
       .on('click', (d) => {
-        console.log("hi");
+        console.log(d.target.__data__.obj);
+        window.location.href = `/projects/${d.target.__data__.obj}`;
       });
 
     var text = svg
@@ -52,12 +55,19 @@
       .attr('text-anchor', 'middle')
       .text((d) => d.obj)
       .attr('font-size', (d) => d.nodeRadius / 3)
-      .style('pointer-events', 'none');
+      .style('pointer-events', 'none')
+      .style('font-family', 'Menlo, Monaco, Consolas')
 
     // Update positions on each tick
     simulation.on("tick", () => {
       // @ts-ignore
-      node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
+      node
+        .attr("cx", (d) => {
+          return d.x = Math.max(d.nodeRadius, Math.min(width - d.nodeRadius, d.x));
+        })
+        .attr("cy", (d) => {
+          return d.y = Math.max(d.nodeRadius, Math.min(height - d.nodeRadius, d.y));
+        });
       text.attr("dx", (d) => d.x).attr("dy", (d) => d.y);
     });
 
@@ -71,10 +81,8 @@
     }
 
     function drag(event) {
-      if (0 <= event.x && event.x < width && 0 <= event.y && event.y < height) {
-        event.subject.fx = event.x;
-        event.subject.fy = event.y;
-      }
+      event.subject.fx = event.x;
+      event.subject.fy = event.y;
     }
 
     function dragEnd(event) {
@@ -93,18 +101,34 @@
 
     dragHandler(node);
   });
+
+  let group = $state(false);
 </script>
 
-<svg id="graph" class="class=w-full h-full select-none" />
-  <!-- {#each data as point}
-    <circle
-      class="node"
-      r={point.nodeRadius}
-      fill={point.color}
-      stroke=1
-      stroke-width=1
-    >
+<div class="grow relative border-2 justify-center aspect-video">
+  <!-- enable javascript message -->
+  <noscript>
+    <div class="h-full w-full flex flex-col gap-2 pt-2 justify-center content-center">
+      <div class="font-mono text-xl px-6 text-center">
+        The dynamic display requires JavaScript
+      </div>
+  
+      <div class="font-mono text-xl px-6 text-center">
+        Enable JavaScript or visit 
+        <a href="/projects" class="underline">
+          projects
+        </a>
+      </div>
+    </div>
+  </noscript>
 
-    </circle>
-  {/each} -->
+  <!-- group selector -->
+  <div class="absolute bottom-0 left-0 p-2">
+    <input type="checkbox" id="group" bind:checked={group}/>
+    <label for="group" class="font-mono">Group by type</label>
+  </div>
+
+  <svg id="graph" class="class=w-full h-full select-none" />
+</div>
+
 
