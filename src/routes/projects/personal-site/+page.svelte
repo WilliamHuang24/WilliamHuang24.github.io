@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <!-- <div>
+    <div>
       <div class="text-xl md:text-3xl">
         Grouping
       </div>
@@ -62,6 +62,6 @@
         Grouping was inspired by <a href="https://layercake.graphics/example/CirclePackForce" class="underline">LayerCake</a>'s componenet using similar methods and svelte reactivity.
         A boolean state was bound the checkbox, and conditional force is applied to the simulation to seperate bubbles into different categories.
       </div>
-    </div> -->
+    </div>
   </div>
 </div>
