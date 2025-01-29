@@ -1,8 +1,7 @@
 <script lang="ts">
-  
+  import ClickableLogo from "$lib/components/ClickableLogo.svelte";
 </script>
 
-<!-- article body -->
 <div class="w-1/2 mt-10 h-full font-mono">
   <div class="text-3xl md:text-5xl pb-2">
     <a href="/">
@@ -16,11 +15,11 @@
     </div>
 
     <div class="flex flex-row h-8 gap-4">
-      <img src="/icons/svelte.svg" alt="svelte"/>
-      <img src="/icons/javascript.svg" alt="javascript"/>
-      <img src="/icons/typescript.svg" alt="typescript"/>
-      <img src="/icons/d3.svg" alt="d3js"/>
-      <img src="/icons/tailwind.svg" alt="tailwindcss"/>
+      <ClickableLogo svg={"svelte"}/>
+      <ClickableLogo svg={"javascript"}/>
+      <ClickableLogo svg={"typescript"}/>
+      <ClickableLogo svg={"d3"}/>
+      <ClickableLogo svg={"tailwind"}/>
 
       <a href="/" class="ml-auto hover:underline">
         github

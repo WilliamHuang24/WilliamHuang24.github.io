@@ -8,10 +8,26 @@ export type Project = {
     github: string;
 }
 
-export const data: Project[] = [
+export const getColor = (category: string) => {
+    switch (category.toLowerCase()) {
+        case "web":
+            return "#ff2056";
+
+        case "programs":
+            return "#00a6f4";
+
+        case "ai":
+            return "#7ccf00";
+
+        default:
+            return "#fd9a00";
+    }
+}
+
+export const projects: Project[] = [
     {
         name: 'my site',
-        category: 'web development',
+        category: 'web',
         tools: ['javascript', 'typescript', 'svelte', 'd3'],
         url: '/projects/personal-site',
         github: ''
@@ -21,6 +37,13 @@ export const data: Project[] = [
         category: 'programs',
         tools: ['java', 'c', 'mips'],
         url: '/projects/ccompiler',
+        github: ''
+    },
+    {
+        name: 'minesweeper',
+        category: 'ai',
+        tools: ['python', 'numpy'],
+        url: '/projects/minesweepersolver',
         github: ''
     }
 ];

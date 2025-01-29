@@ -4,14 +4,28 @@
   import { onMount } from "svelte";
   import * as d3 from "d3";
 
+  import { projects, getColor } from "./data.ts";
+
+  // https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
+
   // Sample data
-  let data = [
+  let nodes = [
     { obj: 'site', nodeRadius: 4, color: "beige", selected: false},
     { obj: 'compiler', nodeRadius: 30, color: "coral", selected: false},
     { obj: 'text', nodeRadius: 40, color: "cornsilk", selected: false},
     { obj: 4, nodeRadius: 20, color: "cyan", selected: false},
     { obj: 5, nodeRadius: 30, color: "red", selected: false},
   ];
+
+  let data = Array.from(projects, (element) => {
+    element.nodeRadius = 40;
+    element.selected = false;
+    element.color = getColor(element.category);
+
+    return element;
+  });
+
+  console.log(nodes);
 
   const width = 960,
     height = 540;
@@ -43,16 +57,14 @@
       .attr("r", (d) => Math.max(d.nodeRadius, 20))
       .attr("fill", (d) => d.color)
       .on('click', (d) => {
-        console.log(d.target.__data__.obj);
-        window.location.href = `/projects/personal-site`;
+        window.location.href = d.target.__data__.url;
       })
       .on('mouseover', (d) => {
-        //d.target.style.stroke = "white";
         d.target.style.strokeWidth = 1;
         d.target.__data__.selected = true;
       })
       .on('mouseleave', (d) => {
-        d.target.style.strokeWidth = 0.5;
+        d.target.style.strokeWidth = "0.01em";
         d.target.__data__.selected = false;
       })
 
@@ -62,7 +74,7 @@
       .data(simulation.nodes())
       .enter().append("text")
       .attr('text-anchor', 'middle')
-      .text((d) => d.obj)
+      .text((d) => d.name)
       .attr('font-size', (d) => Math.max(d.nodeRadius / 3, 20 / 3))
       .style('pointer-events', 'none')
       .style('font-family', 'Menlo, Monaco, Consolas')
@@ -136,7 +148,7 @@
   <!-- group selector -->
   <div class="absolute bottom-0 left-0 p-2">
     <input type="checkbox" id="group" bind:checked={group}/>
-    <label for="group" class="font-mono">Group by type</label>
+    <label for="group" class="font-mono select-none">Group by type</label>
   </div>
 
   <svg id="graph" class="class=w-full h-full select-none" />
