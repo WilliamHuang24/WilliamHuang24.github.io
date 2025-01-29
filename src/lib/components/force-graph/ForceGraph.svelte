@@ -4,18 +4,10 @@
   import { onMount } from "svelte";
   import * as d3 from "d3";
 
-  import { projects, getColor } from "./data.ts";
+  import { projects, getColor, getX } from "./data.ts";
+    import { X } from "lucide-svelte";
 
-  // https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
-
-  // Sample data
-  let nodes = [
-    { obj: 'site', nodeRadius: 4, color: "beige", selected: false},
-    { obj: 'compiler', nodeRadius: 30, color: "coral", selected: false},
-    { obj: 'text', nodeRadius: 40, color: "cornsilk", selected: false},
-    { obj: 4, nodeRadius: 20, color: "cyan", selected: false},
-    { obj: 5, nodeRadius: 30, color: "red", selected: false},
-  ];
+  // get size: https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
 
   let data = Array.from(projects, (element) => {
     element.nodeRadius = 40;
@@ -25,10 +17,10 @@
     return element;
   });
 
-  console.log(nodes);
+  const width = 960, height = 540;
+  const minRadius = 20;
 
-  const width = 960,
-    height = 540;
+  let simulation = d3.forceSimulation(data);
 
   onMount(() => {
     // Create the SVG container
@@ -36,14 +28,14 @@
       .attr("viewBox", [0, 0, width, height]);
 
     // Create the simulation
-    const simulation = d3
+    simulation = d3
       // @ts-ignore
       .forceSimulation(data)
       .force("charge", d3.forceManyBody().strength(-3))
       .force("x", d3.forceX(width / 2).strength(0.005))
       .force("y", d3.forceY(height / 2).strength(0.005))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide((d) => Math.max(d.nodeRadius, 20) + 0.5).strength(1))
+      .force("collide", d3.forceCollide((d) => Math.max(d.nodeRadius, minRadius) + 0.5).strength(1))
       .alphaTarget(0.3);
 
     // Create nodes
@@ -54,7 +46,7 @@
       .selectAll("circle")
       .data(data)
       .join("circle")
-      .attr("r", (d) => Math.max(d.nodeRadius, 20))
+      .attr("r", (d) => Math.max(d.nodeRadius, minRadius))
       .attr("fill", (d) => d.color)
       .on('click', (d) => {
         window.location.href = d.target.__data__.url;
@@ -75,7 +67,7 @@
       .enter().append("text")
       .attr('text-anchor', 'middle')
       .text((d) => d.name)
-      .attr('font-size', (d) => Math.max(d.nodeRadius / 3, 20 / 3))
+      .attr('font-size', (d) => Math.max(d.nodeRadius / 3, minRadius / 3))
       .style('pointer-events', 'none')
       .style('font-family', 'Menlo, Monaco, Consolas')
 
@@ -126,6 +118,24 @@
   });
 
   let group = $state(false);
+
+  $effect(() => {
+    if (group) {
+      simulation
+        .force("x", null)
+        .force("x", 
+          d3.forceX()
+            .x(d => getX(d.category, width))
+            .strength(0.01)
+          ); 
+    } else {
+      simulation
+        .force("x", null)
+        .force("x", d3.forceX(width / 2).strength(0.005));
+    }
+
+    console.log(simulation.force("x").toString());
+  });
 </script>
 
 <div class="grow relative border-2 justify-center aspect-video">
@@ -147,11 +157,24 @@
 
   <!-- group selector -->
   <div class="absolute bottom-0 left-0 p-2">
-    <input type="checkbox" id="group" bind:checked={group}/>
+    <input type="checkbox" id="group" bind:checked={group} autocomplete="off"/>
     <label for="group" class="font-mono select-none">Group by type</label>
   </div>
 
   <svg id="graph" class="class=w-full h-full select-none" />
+
+  <div class="absolute top-0 left-0 p-2 font-mono">
+    <div class="flex flex-row gap-2">
+      <div class="text-sky-500 pl-2">&#9632;</div>
+      <span>java</span>
+
+      <div class="text-rose-500 pl-2">&#9632;</div>
+      <span>web development</span>
+
+      <div class="text-lime-500 pl-2">&#9632;</div>
+      <span>python</span>
+    </div>
+  </div>
 </div>
 
 

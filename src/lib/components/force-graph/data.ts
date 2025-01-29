@@ -13,16 +13,29 @@ export const getColor = (category: string) => {
         case "web":
             return "#ff2056";
 
-        case "programs":
+        case "java":
             return "#00a6f4";
 
-        case "ai":
+        case "python":
             return "#7ccf00";
 
         default:
             return "#fd9a00";
     }
 }
+
+const categories = [
+    "java",
+    "web",
+    "python",
+    // "C/C++",
+];
+
+export const getX = (category: string, width: number) => {
+    // category groups
+    const bucketSize = width / (categories.length + 1);
+    return bucketSize * (categories.indexOf(category) + 1);
+};
 
 export const projects: Project[] = [
     {
@@ -34,14 +47,14 @@ export const projects: Project[] = [
     },
     {
         name: 'c compiler',
-        category: 'programs',
+        category: 'java',
         tools: ['java', 'c', 'mips'],
         url: '/projects/ccompiler',
         github: ''
     },
     {
-        name: 'minesweeper',
-        category: 'ai',
+        name: 'mines. ai',
+        category: 'python',
         tools: ['python', 'numpy'],
         url: '/projects/minesweepersolver',
         github: ''
