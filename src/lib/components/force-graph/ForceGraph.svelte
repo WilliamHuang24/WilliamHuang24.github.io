@@ -6,11 +6,11 @@
 
   // Sample data
   let data = [
-    { obj: 'site', nodeRadius: 20, color: "beige"},
-    { obj: 'compiler', nodeRadius: 30, color: "coral"},
-    { obj: 'text', nodeRadius: 40, color: "cornsilk"},
-    { obj: 4, nodeRadius: 20, color: "cyan"},
-    { obj: 5, nodeRadius: 30, color: "red"},
+    { obj: 'site', nodeRadius: 4, color: "beige", selected: false},
+    { obj: 'compiler', nodeRadius: 30, color: "coral", selected: false},
+    { obj: 'text', nodeRadius: 40, color: "cornsilk", selected: false},
+    { obj: 4, nodeRadius: 20, color: "cyan", selected: false},
+    { obj: 5, nodeRadius: 30, color: "red", selected: false},
   ];
 
   const width = 960,
@@ -29,8 +29,8 @@
       .force("x", d3.forceX(width / 2).strength(0.005))
       .force("y", d3.forceY(height / 2).strength(0.005))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide((d) => d.nodeRadius + 0.5).strength(1))
-      .alpha(1);
+      .force("collide", d3.forceCollide((d) => Math.max(d.nodeRadius, 20) + 0.5).strength(1))
+      .alphaTarget(0.3);
 
     // Create nodes
     const node = svg
@@ -40,12 +40,21 @@
       .selectAll("circle")
       .data(data)
       .join("circle")
-      .attr("r", (d) => d.nodeRadius)
+      .attr("r", (d) => Math.max(d.nodeRadius, 20))
       .attr("fill", (d) => d.color)
       .on('click', (d) => {
         console.log(d.target.__data__.obj);
-        window.location.href = `/projects/${d.target.__data__.obj}`;
-      });
+        window.location.href = `/projects/personal-site`;
+      })
+      .on('mouseover', (d) => {
+        //d.target.style.stroke = "white";
+        d.target.style.strokeWidth = 1;
+        d.target.__data__.selected = true;
+      })
+      .on('mouseleave', (d) => {
+        d.target.style.strokeWidth = 0.5;
+        d.target.__data__.selected = false;
+      })
 
     var text = svg
       .append("g")
@@ -54,7 +63,7 @@
       .enter().append("text")
       .attr('text-anchor', 'middle')
       .text((d) => d.obj)
-      .attr('font-size', (d) => d.nodeRadius / 3)
+      .attr('font-size', (d) => Math.max(d.nodeRadius / 3, 20 / 3))
       .style('pointer-events', 'none')
       .style('font-family', 'Menlo, Monaco, Consolas')
 
@@ -68,7 +77,9 @@
         .attr("cy", (d) => {
           return d.y = Math.max(d.nodeRadius, Math.min(height - d.nodeRadius, d.y));
         });
-      text.attr("dx", (d) => d.x).attr("dy", (d) => d.y);
+      text
+        .attr("dx", (d) => d.x).attr("dy", (d) => d.y)
+        .attr("text-decoration", (d) => d.selected ? "underline" : "none");
     });
 
     function dragStart(event) {
