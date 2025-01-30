@@ -4,9 +4,7 @@
 
 <div class="w-1/2 mt-10 h-full font-mono">
   <div class="text-3xl md:text-5xl pb-2">
-    <a href="/">
-      C Compiler
-    </a>
+    C Compiler
   </div>
 
   <div class="flex flex-col gap-2">
@@ -18,7 +16,7 @@
       <ClickableLogo svg={"java"}/>
       <ClickableLogo svg={"junit"}/>
       
-      <a href="/" class="ml-auto hover:underline">
+      <a href="https://github.com/" class="ml-auto hover:underline">
         github
       </a>
     </div>

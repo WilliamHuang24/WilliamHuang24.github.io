@@ -4,9 +4,7 @@
 
 <div class="w-1/2 mt-10 h-full font-mono">
   <div class="text-3xl md:text-5xl pb-2">
-    <a href="/">
-      Personal Site
-    </a>
+    Personal Site
   </div>
 
   <div class="flex flex-col gap-2">
@@ -21,7 +19,7 @@
       <ClickableLogo svg={"d3"}/>
       <ClickableLogo svg={"tailwind"}/>
 
-      <a href="/" class="ml-auto hover:underline">
+      <a href="https://github.com/" class="ml-auto hover:underline">
         github
       </a>
     </div>

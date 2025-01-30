@@ -1,5 +1,3 @@
-import { forceSimulation } from "d3";
-
 export type Project = {
     name: string;
     nodeRadius: number;
