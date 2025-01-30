@@ -1,0 +1,1 @@
+<p>placeholder text for minesweeper page</p>

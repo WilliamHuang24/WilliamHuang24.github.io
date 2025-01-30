@@ -164,7 +164,7 @@
   
       <div class="font-mono text-xl px-6 text-center">
         Enable JavaScript or visit 
-        <a href="/projects" class="underline">
+        <a href="{base}/projects" class="underline">
           projects
         </a>
       </div>
