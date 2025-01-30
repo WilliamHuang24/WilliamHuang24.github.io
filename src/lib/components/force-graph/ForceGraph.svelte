@@ -64,9 +64,22 @@
       .append("g")
       .selectAll("text")
       .data(simulation.nodes())
-      .enter().append("text")
+      .enter()
+      .append("text")
       .attr('text-anchor', 'middle')
-      .text((d) => d.name)
+      .each(function each(d, i) {
+        const split = d.name.split(' ');
+
+        split.forEach((el, i) => {
+          d3.select(this)
+            .append('tspan')
+            .attr("dx", 0)
+            .attr("dy", (d) => (i * 1.2) + "em")
+            //.attr("transform", "translate(0," + (5 * i) + ")")
+            .text(el);
+        });
+      })
+      // .text((d) => d.name)
       .attr('font-size', (d) => Math.max(d.nodeRadius / 3, minRadius / 3))
       .style('pointer-events', 'none')
       .style('font-family', 'Menlo, Monaco, Consolas')
@@ -84,6 +97,10 @@
       text
         .attr("dx", (d) => d.x).attr("dy", (d) => d.y)
         .attr("text-decoration", (d) => d.selected ? "underline" : "none");
+
+      text
+        .selectAll("tspan")
+        .attr("x", (d) => d.x).attr("y", (d) => d.y);
     });
 
     function dragStart(event) {

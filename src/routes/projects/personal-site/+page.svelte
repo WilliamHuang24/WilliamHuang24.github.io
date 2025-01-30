@@ -59,7 +59,7 @@
       </div>
 
       <div class="text-md md:text-lg text-gray-500">
-        Grouping was inspired by <a href="https://layercake.graphics/example/CirclePackForce" class="underline">LayerCake</a>'s componenet using similar methods and svelte reactivity.
+        Grouping was inspired by <a href="https://layercake.graphics/example/CirclePackForce" class="underline">LayerCake</a>'s component using similar methods and svelte reactivity.
         A boolean state was bound the checkbox, and conditional force is applied to the simulation to seperate bubbles into different categories.
       </div>
     </div>

@@ -39,21 +39,21 @@ export const getX = (category: string, width: number) => {
 
 export const projects: Project[] = [
     {
-        name: 'my site',
+        name: 'my-site',
         category: 'web',
         tools: ['javascript', 'typescript', 'svelte', 'd3'],
         url: '/projects/personal-site',
         github: ''
     },
     {
-        name: 'c compiler',
+        name: 'c-compiler',
         category: 'java',
         tools: ['java', 'c', 'mips'],
         url: '/projects/ccompiler',
         github: ''
     },
     {
-        name: 'mines. ai',
+        name: 'minesweeper solver',
         category: 'python',
         tools: ['python', 'numpy'],
         url: '/projects/minesweepersolver',
