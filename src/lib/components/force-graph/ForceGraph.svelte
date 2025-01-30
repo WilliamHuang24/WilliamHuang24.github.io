@@ -1,16 +1,15 @@
 <script>
   // @ts-nocheck
-
   import { onMount } from "svelte";
+  import { base } from '$app/paths';
   import * as d3 from "d3";
 
   import { projects, getColor, getX } from "./data.ts";
-    import { X } from "lucide-svelte";
+  
 
   // get size: https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
 
   let data = Array.from(projects, (element) => {
-    element.nodeRadius = 40;
     element.selected = false;
     element.color = getColor(element.category);
 
@@ -49,7 +48,7 @@
       .attr("r", (d) => Math.max(d.nodeRadius, minRadius))
       .attr("fill", (d) => d.color)
       .on('click', (d) => {
-        window.location.href = d.target.__data__.url;
+        window.location.href = base + d.target.__data__.url;
       })
       .on('mouseover', (d) => {
         d.target.style.strokeWidth = 1;

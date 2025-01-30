@@ -2,6 +2,7 @@ import { forceSimulation } from "d3";
 
 export type Project = {
     name: string;
+    nodeRadius: number;
     category: string;
     tools: string[];
     url: string;
@@ -40,6 +41,7 @@ export const getX = (category: string, width: number) => {
 export const projects: Project[] = [
     {
         name: 'my-site',
+        nodeRadius: 30,
         category: 'web',
         tools: ['javascript', 'typescript', 'svelte', 'd3'],
         url: '/projects/personal-site',
@@ -47,6 +49,7 @@ export const projects: Project[] = [
     },
     {
         name: 'c-compiler',
+        nodeRadius: 40,
         category: 'java',
         tools: ['java', 'c', 'mips'],
         url: '/projects/ccompiler',
@@ -54,6 +57,7 @@ export const projects: Project[] = [
     },
     {
         name: 'minesweeper solver',
+        nodeRadius: 30,
         category: 'python',
         tools: ['python', 'numpy'],
         url: '/projects/minesweepersolver',
