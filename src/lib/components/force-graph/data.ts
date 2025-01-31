@@ -5,6 +5,7 @@ export type Project = {
     tools: string[];
     url: string;
     github: string;
+    description: string;
 }
 
 export const getColor = (category: string) => {
@@ -41,24 +42,27 @@ export const projects: Project[] = [
         name: 'my-site',
         nodeRadius: 30,
         category: 'web',
-        tools: ['javascript', 'typescript', 'svelte', 'd3'],
+        tools: ['javascript', 'typescript', 'svelte', 'd3', 'web'],
         url: '/projects/personal-site',
-        github: ''
+        github: '',
+        description: 'This site, designed to showcase projects.'
     },
     {
         name: 'c-compiler',
         nodeRadius: 40,
         category: 'java',
-        tools: ['java', 'c', 'mips'],
+        tools: ['java', 'junit', 'c', 'mips', 'apache ant'],
         url: '/projects/ccompiler',
-        github: ''
+        github: '',
+        description: 'Compiled C source files to MIPS assembly.'
     },
     {
         name: 'minesweeper solver',
         nodeRadius: 30,
         category: 'python',
-        tools: ['python', 'numpy'],
+        tools: ['python', 'numpy', 'stable baselines3'],
         url: '/projects/minesweepersolver',
-        github: ''
+        github: '',
+        description: 'Trained reinforcement learning agent to play minesweeper.'
     }
 ];

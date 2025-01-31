@@ -26,7 +26,7 @@
 
   <!-- divider -->
   <div class="flex flex-col gap-4 pt-6 px-4">
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         Lexing and parsing
       </div>
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         Abstract syntax tree
       </div>
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         MIPS generation
       </div>

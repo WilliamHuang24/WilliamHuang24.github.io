@@ -10,7 +10,9 @@
     ['junit', 'https://junit.org/junit5/'],
     ['svelte', 'https://svelte.dev/'],
     ['tailwind', 'https://tailwindcss.com/'],
-    ['typescript', 'https://www.typescriptlang.org/']
+    ['typescript', 'https://www.typescriptlang.org/'],
+    ['python', 'https://www.python.org/'],
+    ['numpy', 'https://numpy.org/']
   ]);
 
   let { svg } = $props();

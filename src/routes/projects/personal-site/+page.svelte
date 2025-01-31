@@ -29,7 +29,7 @@
 
   <!-- divider -->
   <div class="flex flex-col gap-4 pt-6 px-4">
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         Gravity bubble chart
       </div>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         Forces and interaction
       </div>
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="flex flex-col gap-2">
       <div class="text-xl md:text-3xl">
         Grouping
       </div>
