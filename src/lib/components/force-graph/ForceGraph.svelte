@@ -1,34 +1,40 @@
 <script>
   // @ts-nocheck
-  import { onMount } from "svelte";
-  import { base } from '$app/paths';
+  import { onDestroy, onMount } from "svelte";
+  import { base } from "$app/paths";
+  import { goto } from "$app/navigation";
   import * as d3 from "d3";
 
   import { projects, getColor, getX } from "./data.ts";
-  import { nonpassive } from "svelte/legacy";
-  
 
   // get size: https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
 
-  let data = Array.from(projects, (element) => {
+  const data = Array.from(projects, (element) => {
     element.selected = false;
     element.color = getColor(element.category);
 
     return element;
   });
 
-  const width = 960, height = 540;
+  const width = 960,
+    height = 540;
   const minRadius = 20;
 
-  let simulation;
+  let simulation = null;
 
   onMount(() => {
-    // Create the SVG container
-    const svg = d3.select("#graph")
-      .attr("viewBox", [0, 0, width, height]);
+    if (simulation !== null) {
+      simulation
+        .force("charge", null)
+        .force("x", null)
+        .force("y", null)
+        .force("center", null)
+        .force("collide", null);
+    }
 
-    // Create the simulation
-    simulation = null;
+    // Create the SVG container
+    const svg = d3.select("#graph").attr("viewBox", [0, 0, width, height]);
+
     simulation = d3
       .forceSimulation(data)
       .force("charge", d3.forceManyBody().strength(-2))
@@ -46,61 +52,71 @@
       .selectAll("circle")
       .data(simulation.nodes())
       .join("circle")
-      .attr("r", (d) => Math.max(d.nodeRadius, minRadius))
+      .attr("r", (d) => d.nodeRadius)
       .attr("fill", (d) => d.color)
-      .on('click', (d) => {
+      .on("click", (d) => {
+        // goto(base + d.target.__data__.url);
         window.location.href = base + d.target.__data__.url;
       })
-      .on('mouseover', (d) => {
+      .on("mouseover", (d) => {
         d.target.style.strokeWidth = 1;
         d.target.__data__.selected = true;
       })
-      .on('mouseleave', (d) => {
+      .on("mouseleave", (d) => {
         d.target.style.strokeWidth = "0.01em";
         d.target.__data__.selected = false;
-      })
+      });
 
-    var text = svg
+    const text = svg
       .append("g")
       .selectAll("text")
       .data(simulation.nodes())
       .enter()
       .append("text")
-      .attr('text-anchor', 'middle')
+      .attr("text-anchor", "middle")
       .each(function each(d, i) {
-        const split = d.name.split(' ');
+        const split = d.name.split(" ");
 
         split.forEach((el, i) => {
           d3.select(this)
-            .append('tspan')
+            .append("tspan")
             .attr("dx", 0)
-            .attr("dy", (d) => (i * 1.2) + "em")
+            .attr("dy", (d) => i * 1.2 + "em")
             //.attr("transform", "translate(0," + (5 * i) + ")")
             .text(el);
         });
       })
       // .text((d) => d.name)
-      .attr('font-size', (d) => Math.max(d.nodeRadius / 3, minRadius / 3))
-      .style('pointer-events', 'none')
-      .style('font-family', 'Menlo, Monaco, Consolas')
+      .attr("font-size", (d) => Math.max(d.nodeRadius / 3, minRadius / 3))
+      .style("pointer-events", "none")
+      .style("font-family", "Menlo, Monaco, Consolas");
 
     // Update positions on each tick
     simulation.on("tick", () => {
       // @ts-ignore
       node
         .attr("cx", (d) => {
-          return d.x = Math.max(d.nodeRadius, Math.min(width - d.nodeRadius, d.x));
+          return (d.x = Math.max(
+            d.nodeRadius,
+            Math.min(width - d.nodeRadius, d.x)
+          ));
         })
         .attr("cy", (d) => {
-          return d.y = Math.max(d.nodeRadius, Math.min(height - d.nodeRadius, d.y));
+          return (d.y = Math.max(
+            d.nodeRadius,
+            Math.min(height - d.nodeRadius, d.y)
+          ));
         });
+
       text
-        .attr("dx", (d) => d.x).attr("dy", (d) => d.y)
-        .attr("text-decoration", (d) => d.selected ? "underline" : "none");
+        .attr("dx", (d) => d.x)
+        .attr("dy", (d) => d.y)
+        .attr("text-decoration", (d) => (d.selected ? "underline" : "none"));
 
       text
         .selectAll("tspan")
-        .attr("x", (d) => d.x).attr("y", (d) => d.y);
+        .attr("x", (d) => d.x)
+        .attr("y", (d) => d.y);
     });
 
     function dragStart(event) {
@@ -126,57 +142,58 @@
       event.subject.fy = null;
     }
 
-    const dragHandler = d3.drag()
+    const dragHandler = d3
+      .drag()
       .on("start", dragStart)
       .on("drag", drag)
       .on("end", dragEnd);
 
     dragHandler(node);
-
-    console.log("reload");
   });
+
+  onDestroy(() => {
+    simulation = null;
+  })
 
   let group = $state(false);
 
   $effect(() => {
     if (group) {
-      simulation
-        .force("x", null)
-        .force("x", 
-          d3.forceX()
-            .x(d => getX(d.category, width))
-            .strength(0.01)
-          ); 
+      simulation.force("x", null).force(
+        "x",
+        d3
+          .forceX()
+          .x((d) => getX(d.category, width))
+          .strength(0.01)
+      );
     } else {
       simulation
         .force("x", null)
         .force("x", d3.forceX(width / 2).strength(0.005));
     }
-
-    console.log(simulation.force("x").toString());
   });
 </script>
 
 <div class="grow relative border-2 justify-center aspect-video">
   <!-- enable javascript message -->
   <noscript>
-    <div class="h-full w-full flex flex-col gap-2 pt-2 justify-center content-center">
+    <div
+      class="h-full w-full flex flex-col gap-2 pt-2 justify-center content-center"
+    >
       <div class="font-mono text-xl px-6 text-center">
         The dynamic display requires JavaScript
       </div>
-  
+
       <div class="font-mono text-xl px-6 text-center">
-        Enable JavaScript or visit 
-        <a href="{base}/projects" class="underline">
-          projects
-        </a>
+        Enable JavaScript or visit
+        <a href="{base}/projects" class="underline"> projects </a>
       </div>
     </div>
   </noscript>
 
   <!-- group selector -->
   <div class="absolute bottom-0 left-0 p-2">
-    <input type="checkbox" id="group" bind:checked={group} autocomplete="off"/>
+    <input type="checkbox" id="group" bind:checked={group} autocomplete="off" />
     <label for="group" class="font-mono select-none">Group by type</label>
   </div>
 
@@ -198,5 +215,3 @@
     </div>
   </div>
 </div>
-
-
