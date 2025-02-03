@@ -19,7 +19,7 @@
       <ClickableLogo svg={"d3"}/>
       <ClickableLogo svg={"tailwind"}/>
 
-      <a href="https://github.com/" class="ml-auto hover:underline">
+      <a href="https://github.com/WilliamHuang24/WilliamHuang24.github.io" class="ml-auto hover:underline">
         github
       </a>
     </div>
@@ -59,6 +59,16 @@
       <div class="text-md md:text-lg text-gray-500">
         Grouping was inspired by <a href="https://layercake.graphics/example/CirclePackForce" class="underline">LayerCake</a>'s component using similar methods and svelte reactivity.
         A boolean state was bound the checkbox, and conditional force is applied to the simulation to seperate bubbles into different categories.
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <div class="text-xl md:text-3xl">
+        Deploying
+      </div>
+
+      <div class="text-md md:text-lg text-gray-500">
+        Automatic build and deploying to Github pages through Github Actions and Svelte's static site generation.
       </div>
     </div>
   </div>

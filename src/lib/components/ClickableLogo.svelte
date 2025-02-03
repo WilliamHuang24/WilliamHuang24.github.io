@@ -12,7 +12,14 @@
     ['tailwind', 'https://tailwindcss.com/'],
     ['typescript', 'https://www.typescriptlang.org/'],
     ['python', 'https://www.python.org/'],
-    ['numpy', 'https://numpy.org/']
+    ['numpy', 'https://numpy.org/'],
+    ['matplotlib', 'https://matplotlib.org/'],
+    ['sdl', 'https://www.libsdl.org/'],
+    ['supabase', 'https://supabase.com/'],
+    ['postgres', 'https://www.postgresql.org/'],
+    ['react', 'https://react.dev/'],
+    ['nodejs', 'https://nodejs.org/en'],
+    ['mongodb', 'https://www.mongodb.com/']
   ]);
 
   let { svg } = $props();

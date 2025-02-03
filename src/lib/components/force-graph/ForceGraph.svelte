@@ -5,6 +5,7 @@
   import * as d3 from "d3";
 
   import { projects, getColor, getX } from "./data.ts";
+  import { nonpassive } from "svelte/legacy";
   
 
   // get size: https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
@@ -19,7 +20,7 @@
   const width = 960, height = 540;
   const minRadius = 20;
 
-  let simulation = d3.forceSimulation(data);
+  let simulation;
 
   onMount(() => {
     // Create the SVG container
@@ -27,14 +28,14 @@
       .attr("viewBox", [0, 0, width, height]);
 
     // Create the simulation
+    simulation = null;
     simulation = d3
-      // @ts-ignore
       .forceSimulation(data)
-      .force("charge", d3.forceManyBody().strength(-3))
+      .force("charge", d3.forceManyBody().strength(-2))
       .force("x", d3.forceX(width / 2).strength(0.005))
       .force("y", d3.forceY(height / 2).strength(0.005))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collide", d3.forceCollide((d) => Math.max(d.nodeRadius, minRadius) + 0.5).strength(1))
+      .force("collide", d3.forceCollide((d) => d.nodeRadius + 0.5).strength(1))
       .alphaTarget(0.3);
 
     // Create nodes
@@ -43,7 +44,7 @@
       .attr("stroke", "black")
       .attr("stroke-width", "0.01em")
       .selectAll("circle")
-      .data(data)
+      .data(simulation.nodes())
       .join("circle")
       .attr("r", (d) => Math.max(d.nodeRadius, minRadius))
       .attr("fill", (d) => d.color)
@@ -131,6 +132,8 @@
       .on("end", dragEnd);
 
     dragHandler(node);
+
+    console.log("reload");
   });
 
   let group = $state(false);
@@ -189,6 +192,9 @@
 
       <div class="text-lime-500 pl-2">&#9632;</div>
       <span>python</span>
+
+      <div class="text-amber-500 pl-2">&#9632;</div>
+      <span>C/C++</span>
     </div>
   </div>
 </div>

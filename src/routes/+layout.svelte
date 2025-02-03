@@ -5,7 +5,13 @@
 	let { children } = $props();
 </script>
 
-<div class="w-full h-screen flex flex-col items-center bg-slate-100">
+<style lang="postcss">
+  :global(body) {
+    @apply bg-slate-100
+  }
+</style>
+
+<div class="w-full h-screen flex flex-col items-center">
   <!-- nav -->
   <div class="w-full flex flex-row px-4 py-2">
 		<a href="{base}/">
