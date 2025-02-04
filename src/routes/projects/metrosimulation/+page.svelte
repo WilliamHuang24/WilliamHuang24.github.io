@@ -15,7 +15,7 @@
     <div class="flex flex-row h-8 gap-4">
       <ClickableLogo svg={"java"}/>
 
-      <a href="https://github.com/" class="ml-auto hover:underline">
+      <a href="https://github.com/WilliamHuang24/concurrency-projects" class="ml-auto hover:underline">
         github
       </a>
     </div>
