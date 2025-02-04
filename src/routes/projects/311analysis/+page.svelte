@@ -16,7 +16,7 @@
       <ClickableLogo svg={"python"}/>
       <ClickableLogo svg={"matplotlib"}/>
       
-      <a href="https://github.com/" class="ml-auto hover:underline">
+      <a href="https://github.com/WilliamHuang24/data-science-projects" class="ml-auto hover:underline">
         github
       </a>
     </div>
