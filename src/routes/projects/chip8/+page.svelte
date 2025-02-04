@@ -16,7 +16,7 @@
       <ClickableLogo svg={"c++"}/>
       <ClickableLogo svg={"sdl"}/>
       
-      <a href="https://github.com/" class="ml-auto hover:underline">
+      <a href="https://github.com/WilliamHuang24/chip8-emulator" class="ml-auto hover:underline">
         github
       </a>
     </div>
