@@ -16,9 +16,9 @@
       <ClickableLogo svg={"java"}/>
       <ClickableLogo svg={"junit"}/>
       
-      <a href="https://github.com/" class="ml-auto hover:underline">
+      <!-- <a href="https://github.com/" class="ml-auto hover:underline">
         github
-      </a>
+      </a> -->
     </div>
   </div>
 
